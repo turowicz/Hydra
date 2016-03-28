@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Hydra.Tests.Unit
 {
-    public class HydraTests : UnitBase
+    public class CoreTests : UnitBase
     {
         [Fact]
         public void AcceptsStorageAccounts()

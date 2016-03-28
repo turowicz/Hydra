@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Hydra.Tests.Integration
 {
-    public class HydraTests : IntegrationBase
+    public class CoreTests : IntegrationBase
     {
         const Int32 UserCount = 10000;
 

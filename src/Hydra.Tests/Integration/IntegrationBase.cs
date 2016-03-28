@@ -2,6 +2,8 @@
 using Hydra.Core;
 using Hydra.Core.Sharding;
 using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Moq;
 
 namespace Hydra.Tests.Integration
 {
@@ -37,7 +39,7 @@ namespace Hydra.Tests.Integration
             queueRef.CreateIfNotExists();
         }
 
-        static IHydra CreateHydra()
+        protected static IHydra CreateHydra()
         {
             var sharding = new JumpSharding();
 
@@ -46,6 +48,22 @@ namespace Hydra.Tests.Integration
                                                        CloudStorageAccount.DevelopmentStorageAccount,
                                                        CloudStorageAccount.DevelopmentStorageAccount,
                                                        CloudStorageAccount.DevelopmentStorageAccount });
+        }
+
+        protected static Mock<IHydra> CreateHydraMock()
+        {
+            var blobClient = CreateBlobClient();
+
+            var hydra = new Mock<IHydra>();
+            hydra.Setup(x => x.CreateBlobClient(It.IsAny<string>())).Returns(blobClient);
+            return hydra;
+        }
+
+        protected static CloudBlobClient CreateBlobClient()
+        {
+            var connectionString = Environment.GetEnvironmentVariable("HYDRATEST");
+            var blobClient = CloudStorageAccount.Parse(connectionString).CreateCloudBlobClient();
+            return blobClient;
         }
     }
 }
