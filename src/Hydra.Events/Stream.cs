@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -9,7 +8,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Hydra.Events
 {
-    public class Stream
+    public class Stream : IStream
     {
         public String Container { get; set; }
 
@@ -25,7 +24,7 @@ namespace Hydra.Events
             Container = container;
         }
 
-        public async Task WriteAsync(String shardingKey, String streamId, String eventData, StreamOptions options = default(StreamOptions), CancellationToken token = default(CancellationToken))
+        public async Task WriteEventAsync(String shardingKey, String streamId, String eventData, StreamOptions options = default(StreamOptions), CancellationToken token = default(CancellationToken))
         {
             var streamOptions = options ?? new StreamOptions();
             var blob = await GetBlobReference(shardingKey, streamId, token, streamOptions);
@@ -41,7 +40,7 @@ namespace Hydra.Events
             }
         }
 
-        public async Task<string[]> ReadAsync(String shardingKey, String streamId, StreamOptions options = default(StreamOptions), CancellationToken token = default(CancellationToken))
+        public async Task<string[]> ReadEventsAsync(String shardingKey, String streamId, StreamOptions options = default(StreamOptions), CancellationToken token = default(CancellationToken))
         {
             var streamOptions = options ?? new StreamOptions();
             var blob = await GetBlobReference(shardingKey, streamId, token, streamOptions);

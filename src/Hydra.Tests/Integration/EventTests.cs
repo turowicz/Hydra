@@ -16,9 +16,9 @@ namespace Hydra.Tests.Integration
             var id = Guid.NewGuid().ToString();
             var eventData = "{ \"name\": \"john\" }";
 
-            await subject.WriteAsync("key", id, eventData);
+            await subject.WriteEventAsync("key", id, eventData);
 
-            var persisted = await subject.ReadAsync("key", id);
+            var persisted = await subject.ReadEventsAsync("key", id);
 
             Assert.Equal(eventData, persisted.First());
         }
@@ -33,10 +33,10 @@ namespace Hydra.Tests.Integration
             var eventData1 = "{ \"name\": \"john\" }";
             var eventData2 = "{ \"lastname\": \"doe\" }";
 
-            await subject.WriteAsync("key", id, eventData1);
-            await subject.WriteAsync("key", id, eventData2);
+            await subject.WriteEventAsync("key", id, eventData1);
+            await subject.WriteEventAsync("key", id, eventData2);
 
-            var persisted = await subject.ReadAsync("key", id);
+            var persisted = await subject.ReadEventsAsync("key", id);
 
             Assert.Equal(eventData1, persisted[0]);
             Assert.Equal(eventData2, persisted[1]);
