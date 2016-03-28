@@ -1,6 +1,5 @@
 ﻿using System;
-using System.IO;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -9,21 +8,23 @@ namespace Hydra.Tests.Integration
     public class EventTests : IntegrationBase
     {
         [Fact]
-        public async Task WritesNewStream()
+        public async Task WritesReadsNewStream()
         {
             var hydra = CreateHydraMock();
             var subject = new Events.Stream(hydra.Object);
 
+            var id = Guid.NewGuid().ToString();
             var eventData = "{ \"name\": \"john\" }";
 
-            using (var dataStream = new MemoryStream(Encoding.UTF8.GetBytes(eventData)))
-            {
-                await subject.WriteAsync("key", Guid.NewGuid().ToString(), dataStream);
-            }
+            await subject.WriteAsync("key", id, eventData);
+
+            var persisted = await subject.ReadAsync("key", id);
+
+            Assert.Equal(eventData, persisted.First());
         }
 
         [Fact]
-        public async Task WritesExistingStream()
+        public async Task WritesReadsExistingStream()
         {
             var hydra = CreateHydraMock();
             var subject = new Events.Stream(hydra.Object);
@@ -32,15 +33,13 @@ namespace Hydra.Tests.Integration
             var eventData1 = "{ \"name\": \"john\" }";
             var eventData2 = "{ \"lastname\": \"doe\" }";
 
-            using (var dataStream = new MemoryStream(Encoding.UTF8.GetBytes(eventData1)))
-            {
-                await subject.WriteAsync("key", id, dataStream);
-            }
+            await subject.WriteAsync("key", id, eventData1);
+            await subject.WriteAsync("key", id, eventData2);
 
-            using (var dataStream = new MemoryStream(Encoding.UTF8.GetBytes(eventData2)))
-            {
-                await subject.WriteAsync("key", id, dataStream);
-            }
+            var persisted = await subject.ReadAsync("key", id);
+
+            Assert.Equal(eventData1, persisted[0]);
+            Assert.Equal(eventData2, persisted[1]);
         }
     }
 }
