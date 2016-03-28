@@ -26,17 +26,18 @@ namespace Hydra.Events
 
         public async Task WriteEventAsync(String shardingKey, String streamId, String eventData, StreamOptions options = default(StreamOptions), CancellationToken token = default(CancellationToken))
         {
+            var dataBuilder = new StringBuilder(eventData);
             var streamOptions = options ?? new StreamOptions();
             var blob = await GetBlobReference(shardingKey, streamId, token, streamOptions);
 
-            using (var dataStream = new MemoryStream(Encoding.UTF8.GetBytes(eventData)))
-            {
-                await blob.AppendBlockAsync(dataStream, null, token);
-            }
-
             if (streamOptions.AppendDelimeter)
             {
-                await AppendDelimeter(blob, token);
+                dataBuilder.Append(Delimiter);
+            }
+
+            using (var dataStream = new MemoryStream(Encoding.UTF8.GetBytes(dataBuilder.ToString())))
+            {
+                await blob.AppendBlockAsync(dataStream, null, token);
             }
         }
 
@@ -47,14 +48,6 @@ namespace Hydra.Events
             var content = await blob.DownloadTextAsync(Encoding.UTF8, null, null, null, token);
 
             return content.Split(new[] { DelimiterString }, StringSplitOptions.None);
-        }
-
-        async Task AppendDelimeter(CloudAppendBlob blob, CancellationToken token)
-        {
-            using (var stream = new MemoryStream(Delimiter))
-            {
-                await blob.AppendBlockAsync(stream, null, token);
-            }
         }
 
         private async Task<CloudAppendBlob> GetBlobReference(string shardingKey, string streamId, CancellationToken token, StreamOptions streamOptions)
