@@ -67,6 +67,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Locks\AsyncLocks.cs" />
+    <Compile Include="Locks\IAsyncLocks.cs" />
     <Compile Include="StorageFactory.cs" />
     <Compile Include="Sharding\ISharding.cs" />
     <Compile Include="Sharding\JumpSharding.cs" />

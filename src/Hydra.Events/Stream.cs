@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Hydra.Core;
-using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Hydra.Events
 {

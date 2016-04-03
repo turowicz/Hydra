@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Hydra.Core;
+using Hydra.Core.Locks;
 using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Hydra.Events
@@ -13,6 +14,8 @@ namespace Hydra.Events
         private static readonly IDictionary<String, object> ExistingContainers = new ConcurrentDictionary<String, object>();
 
         private static readonly IDictionary<String, object> ExistingStreams = new ConcurrentDictionary<String, object>();
+
+        private static readonly IAsyncLocks<String> Locks = new AsyncLocks<String>();
 
         private readonly IHydra _hydra;
 
@@ -24,23 +27,42 @@ namespace Hydra.Events
         public async Task<CloudAppendBlob> GetBlobReference(String shardingKey, String containerName, String streamId, CancellationToken token, StreamOptions streamOptions)
         {
             var client = _hydra.CreateBlobClient(shardingKey);
+            var account = client.Credentials.AccountName;
             var container = client.GetContainerReference(containerName);
+            var semaphore = GetSemaphore(account, containerName, streamId);
 
-            if (streamOptions.CreateContainer && !GetContainerExists(client.Credentials.AccountName, containerName))
+            if (await semaphore.WaitAsync(TimeSpan.FromSeconds(5), token))
             {
-                await container.CreateIfNotExistsAsync(token);
-                SetContainerExists(client.Credentials.AccountName, containerName);
+                try
+                {
+                    if (streamOptions.CreateContainer && !GetContainerExists(account, containerName))
+                    {
+                        await container.CreateIfNotExistsAsync(token);
+                        SetContainerExists(account, containerName);
+                    }
+
+                    var blob = container.GetAppendBlobReference(streamId);
+
+                    if (streamOptions.CreateBlob && !GetStreamExists(account, containerName, streamId) && !await blob.ExistsAsync(token))
+                    {
+                        await blob.CreateOrReplaceAsync(token);
+                        SetStreamExists(account, containerName, streamId);
+                    }
+
+                    return blob;
+                }
+                finally
+                {
+                    semaphore.Release();
+                }
             }
 
-            var blob = container.GetAppendBlobReference(streamId);
+            throw new TimeoutException("Unable to get blob reference");
+        }
 
-            if (streamOptions.CreateBlob && !GetStreamExists(client.Credentials.AccountName, containerName, streamId) && !await blob.ExistsAsync(token))
-            {
-                await blob.CreateOrReplaceAsync(token);
-                SetStreamExists(client.Credentials.AccountName, containerName, streamId);
-            }
-
-            return blob;
+        private static SemaphoreSlim GetSemaphore(String account, String container, String blob)
+        {
+            return Locks.Get($"{account}-{container}", blob);
         }
 
         private static Boolean GetContainerExists(String account, String container)
