@@ -14,7 +14,7 @@ namespace Hydra.Events
     {
         public String Container { get; set; }
 
-        private static readonly string DelimiterString = "\r\n";
+        private static readonly String DelimiterString = "\r\n";
 
         private readonly IStreamContainer _streamContainer;
 
@@ -41,7 +41,7 @@ namespace Hydra.Events
             }
         }
 
-        public async Task<string[]> ReadEventsAsync(String shardingKey, String streamId, StreamOptions options = default(StreamOptions), CancellationToken token = default(CancellationToken))
+        public async Task<String[]> ReadEventsAsync(String shardingKey, String streamId, StreamOptions options = default(StreamOptions), CancellationToken token = default(CancellationToken))
         {
             var streamOptions = options ?? new StreamOptions();
             var blob = await _streamContainer.GetBlobReference(shardingKey, Container, streamId, token, streamOptions);

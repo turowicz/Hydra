@@ -10,10 +10,9 @@ namespace Hydra.Events
 {
     public class StreamContainer : IStreamContainer
     {
+        private static readonly IDictionary<String, object> ExistingContainers = new ConcurrentDictionary<String, object>();
 
-        private static readonly IDictionary<string, object> ExistingContainers = new ConcurrentDictionary<string, object>();
-
-        private static readonly IDictionary<string, object> ExistingStreams = new ConcurrentDictionary<string, object>();
+        private static readonly IDictionary<String, object> ExistingStreams = new ConcurrentDictionary<String, object>();
 
         private readonly IHydra _hydra;
 
@@ -22,7 +21,7 @@ namespace Hydra.Events
             _hydra = hydra;
         }
 
-        public async Task<CloudAppendBlob> GetBlobReference(string shardingKey, string containerName, string streamId, CancellationToken token, StreamOptions streamOptions)
+        public async Task<CloudAppendBlob> GetBlobReference(String shardingKey, String containerName, String streamId, CancellationToken token, StreamOptions streamOptions)
         {
             var client = _hydra.CreateBlobClient(shardingKey);
             var container = client.GetContainerReference(containerName);
@@ -44,22 +43,22 @@ namespace Hydra.Events
             return blob;
         }
 
-        private static Boolean GetContainerExists(string account, string container)
+        private static Boolean GetContainerExists(String account, String container)
         {
             return ExistingContainers.ContainsKey($"{account}-{container}");
         }
 
-        private static void SetContainerExists(string account, string container)
+        private static void SetContainerExists(String account, String container)
         {
             ExistingContainers[$"{account}-{container}"] = true;
         }
 
-        private static Boolean GetStreamExists(string account, string container, string blob)
+        private static Boolean GetStreamExists(String account, String container, String blob)
         {
             return ExistingStreams.ContainsKey($"{account}-{container}-{blob}");
         }
 
-        private static void SetStreamExists(string account, string container, string blob)
+        private static void SetStreamExists(String account, String container, String blob)
         {
             ExistingStreams[$"{account}-{container}-{blob}"] = true;
         }
