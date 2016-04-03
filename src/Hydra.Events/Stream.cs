@@ -90,12 +90,12 @@ namespace Hydra.Events
 
         private static Boolean GetStreamExists(string account, string container, string blob)
         {
-            return ExistingContainers.ContainsKey($"{account}-{container}-{blob}");
+            return ExistingStreams.ContainsKey($"{account}-{container}-{blob}");
         }
 
         private static void SetStreamExists(string account, string container, string blob)
         {
-            ExistingContainers[$"{account}-{container}-{blob}"] = true;
+            ExistingStreams[$"{account}-{container}-{blob}"] = true;
         }
     }
 }
