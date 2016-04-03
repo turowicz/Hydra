@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Hydra.Events;
 using Xunit;
 
 namespace Hydra.Tests.Integration
@@ -10,8 +11,9 @@ namespace Hydra.Tests.Integration
         [Fact]
         public async Task WritesReadsNewStream()
         {
-            var hydra = CreateHydraMock();
-            var subject = new Events.Stream(hydra.Object);
+            var hydra = CreateHydra();
+            var container = new StreamContainer(hydra);
+            var subject = new Stream(container);
 
             var id = Guid.NewGuid().ToString();
             var eventData = "{ \"name\": \"john\" }";
@@ -26,8 +28,9 @@ namespace Hydra.Tests.Integration
         [Fact]
         public async Task WritesReadsExistingStream()
         {
-            var hydra = CreateHydraMock();
-            var subject = new Events.Stream(hydra.Object);
+            var hydra = CreateHydra();
+            var container = new StreamContainer(hydra);
+            var subject = new Stream(container);
 
             var id = Guid.NewGuid().ToString();
             var eventData1 = "{ \"name\": \"john\" }";
