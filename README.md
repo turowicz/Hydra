@@ -1,6 +1,6 @@
 ## Hydra
  
-[![Build status](https://ci.appveyor.com/api/projects/status/b8o97a6lxfpvdvdv/branch/master?svg=true)](https://ci.appveyor.com/project/naeem-khedarun/hydra/branch/master) [![NuGet](https://img.shields.io/nuget/v/Mailcloud.Hydra.Core.svg)](https://www.nuget.org/packages/Mailcloud.Hydra.Core/) [![Join the chat at https://gitter.im/Mailcloud/Hydra](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Mailcloud/Hydra?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+ [![NuGet](https://img.shields.io/nuget/v/Mailcloud.Hydra.Core.svg)](https://www.nuget.org/packages/Mailcloud.Hydra.Core/)  [![NuGet](https://img.shields.io/nuget/v/Mailcloud.Hydra.Events.svg)](https://www.nuget.org/packages/Mailcloud.Hydra.Events/) [![Join the chat at https://gitter.im/Mailcloud/Hydra](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Mailcloud/Hydra?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 A set of components to take the most advantage of performance and capacity of Azure Storage. 
 
