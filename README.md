@@ -14,7 +14,7 @@ Hydra is Azure Subscription agnostic, which means it is possible to use Storage 
 
 ` class Hydra : IHydra `
 
-A central component for scaling across multiple Storage Accounts. It is using a ISharding strategy to compute consistent hashes that pick a right Storage Account by key provided.
+A central component for scaling across multiple Storage Accounts. It is using an ISharding strategy to compute consistent hashes that pick a right Storage Account by key provided.
 
 ` class JumpSharding : ISharding `
 
@@ -27,6 +27,24 @@ Hydra.Core doesn't manage shard migration, which means you are constrained the a
 ### Advanced usage
 
 It is possible to have multiple instances of Hydra, configured to point at different and/or the same Storage Accounts, with different and/or the same ISharding implementations. That feature gives the developer maximum flexibility for making sure the right data is distributed in the right way.
+
+### Example
+
+Example usage can be found in the Hydra.Tests.Integration namespace.
+
+## Hydra.Events
+
+` class StreamContainer : IStreamContainer `
+
+A central component for managing Stream's underlying storage. It requires an IHydra component to gain access to the storage.
+
+` class Stream : IStream `
+
+This component is in charge of writing and reading events to a stream in storage.
+
+### Disclaimer
+
+Hydra.Events has a limitation dictated by Azure Storage. Currently one stream can consist of up to 50,000 events and 195GB of space.
 
 ### Example
 
