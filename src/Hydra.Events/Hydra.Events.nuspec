@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Mailcloud.Hydra.Events</id>
+    <version>$version$</version>
+    <title>Mailcloud.Hydra.Events</title>
+    <authors>Mailcloud</authors>
+    <owners>Mailcloud</owners>
+    <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/Mailcloud/Hydra</projectUrl>
+    <iconUrl>https://www.mailcloud.com/img/build/favicon/apple-touch-icon-57x57.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Event Sourcing and Sharding library for Azure Storage optimised for multithreading.</description>
+    <releaseNotes>Hydra is Azure Subscribtion agnostic, which means it is possible to use Storage Accounts from different Azure Subscriptions. This functionality gives the developer configurable IOPS and Disk Space with no upper limits.</releaseNotes>
+    <copyright>Copyright Mailcloud 2015</copyright>
+    <tags>Azure Table Storage Shard Sharding Event Sourcing</tags>
+    <dependencies>
+      <group targetFramework="net46">
+        <dependency id="murmurhash" />
+        <dependency id="WindowsAzure.Storage" />
+        <dependency id="Mailcloud.Hydra.Core" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Debug\*.dll" target="lib\net46" />
+  </files>
+</package>
