@@ -11,7 +11,7 @@
     <iconUrl>https://www.mailcloud.com/img/build/favicon/apple-touch-icon-57x57.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Sharding library for Azure Storage optimised for multithreading.</description>
-    <releaseNotes>Hydra is Azure Subscribtion agnostic, which means it is possible to use Storage Accounts from different Azure Subscriptions. This functionality gives the developer configurable IOPS and Disk Space with no upper limits.</releaseNotes>
+    <releaseNotes>Join the conversation: https://gitter.im/Amazebytes/Hydra! Hydra is Azure Subscription agnostic, which means it is possible to use Storage Accounts from different Azure Subscriptions. This functionality gives the developer configurable IOPS and Disk Space with no upper limits.</releaseNotes>
     <copyright>Copyright Mailcloud 2015</copyright>
     <tags>Azure Table Storage Shard Sharding</tags>
     <dependencies>
