@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FF664F49-7C25-437F-A3D8-27FD1FE3C486}</ProjectGuid>
+    <ProjectGuid>{94338811-FF73-4003-A13E-E949883A9F95}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Hydra.Events</RootNamespace>
-    <AssemblyName>Hydra.Events</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <RootNamespace>Hydra.Tables</RootNamespace>
+    <AssemblyName>Hydra.Tables</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -69,22 +68,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IStream.cs" />
-    <Compile Include="IStreamContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Stream.cs" />
-    <Compile Include="StreamContainer.cs" />
-    <Compile Include="StreamOptions.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Hydra.Core\Hydra.Core.csproj">
-      <Project>{ff2a637b-206f-439a-8feb-2b38328e0bcf}</Project>
-      <Name>Hydra.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Hydra.Events.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
